@@ -70,7 +70,8 @@ namespace Moriyama.AzureSearch.Umbraco.Application.Examine
             {
                 if (azureResult.Properties["__match"] is HitHighlights matchObj)
                 {
-                    matchHighlights = JsonConvert.SerializeObject(matchObj, BaseAzureSearch.GetSerializationSettings());
+                    
+                    matchHighlights = JsonConvert.SerializeObject(matchObj, new JsonSerializerSettings { DefaultValueHandling = DefaultValueHandling.Ignore });
                 }
             }
 

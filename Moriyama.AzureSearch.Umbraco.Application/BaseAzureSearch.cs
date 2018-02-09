@@ -17,20 +17,17 @@ namespace Moriyama.AzureSearch.Umbraco.Application
         {
             _path = path;
 
-            var deserializationSettings = GetClient().DeserializationSettings;
-
+           
             var configData = File.ReadAllText(Path.Combine(path, @"config\AzureSearch.config"));
 
-            _config = JsonConvert.DeserializeObject<AzureSearchConfig>(configData, deserializationSettings);
+            _config = JsonConvert.DeserializeObject<AzureSearchConfig>(configData, new JsonSerializerSettings { DefaultValueHandling = DefaultValueHandling.Ignore });
         }
 
         public void SaveConfiguration(AzureSearchConfig config)
         {
             _config = config;
-            var serializerSettings = GetSerializationSettings(config);
-            serializerSettings.DefaultValueHandling = DefaultValueHandling.Ignore;
-
-            File.WriteAllText(Path.Combine(_path, @"config\AzureSearch.config"), JsonConvert.SerializeObject(config, Formatting.Indented, serializerSettings));
+            
+            File.WriteAllText(Path.Combine(_path, @"config\AzureSearch.config"), JsonConvert.SerializeObject(config, Formatting.Indented, new JsonSerializerSettings { DefaultValueHandling = DefaultValueHandling.Ignore }));
         }
 
         public AzureSearchConfig GetConfiguration()

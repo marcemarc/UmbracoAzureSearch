@@ -38,18 +38,15 @@ namespace Moriyama.AzureSearch.Umbraco.Application
             return _config;
         }
 
-        public static SearchServiceClient GetClient(AzureSearchConfig config = null)
+        public SearchServiceClient GetClient()
         {
-            var serviceName = config != null ? config.SearchServiceName : "name";
-            var apiKey = config != null ? config.SearchServiceAdminApiKey : "apikey";
+            var serviceName = _config.SearchServiceName;
+            var apiKey = _config.SearchServiceAdminApiKey;
 
             var serviceClient = new SearchServiceClient(serviceName, new SearchCredentials(apiKey));
             return serviceClient;
         }
 
-        public static JsonSerializerSettings GetSerializationSettings(AzureSearchConfig config = null)
-        {
-            return GetClient(config).SerializationSettings;
-        }
+        
     }
 }

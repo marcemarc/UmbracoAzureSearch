@@ -14,7 +14,7 @@ namespace Moriyama.AzureSearch.Umbraco.Application.Models
 
         public SearchField[] SearchFields { get; set; }
 
-        public Analyzer[] Analyzers {get; set;} 
+        public CustomAnalyzer[] Analyzers {get; set;} 
 
         public ScoringProfile[] ScoringProfiles {get; set;}
         

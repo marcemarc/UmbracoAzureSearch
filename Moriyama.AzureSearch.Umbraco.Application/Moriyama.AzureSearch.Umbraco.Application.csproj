@@ -269,6 +269,9 @@
     <Compile Include="Models\SearchFacet.cs" />
     <Compile Include="Models\SearchResult.cs" />
     <Compile Include="Helper\SearchContentExtensions.cs" />
+    <Compile Include="SearchableTrees\AzureSearchContentSearchableTree.cs" />
+    <Compile Include="SearchableTrees\AzureSearchMediaSearchableTree.cs" />
+    <Compile Include="SearchableTrees\AzureSearchMemberSearchableTree.cs" />
     <Compile Include="Umbraco\CustomApplicationEventHandler.cs" />
     <Compile Include="Controllers\AzureSearchApiController.cs" />
     <Compile Include="Interfaces\IAzureSearchIndexClient.cs" />

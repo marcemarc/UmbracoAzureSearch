@@ -12,7 +12,7 @@ namespace Moriyama.AzureSearch.Umbraco.Application.SearchableTrees
 {
     public class AzureSearchMemberSearchableTree : ISearchableTree
     {
-        public string TreeAlias => "Member";
+        public string TreeAlias => "member";
 
         public IEnumerable<SearchResultItem> Search(string query, int pageSize, long pageIndex, out long totalFound, string searchFrom = null)
         {
@@ -22,10 +22,14 @@ namespace Moriyama.AzureSearch.Umbraco.Application.SearchableTrees
             // will this mess up any other Url encoded terms? or fix them too?
             query = HttpUtility.UrlDecode(query);
             //build up query
+
+            //pageIndex is 0 indexed, whereas AzureSearch integration expects actual page number so we always add 1 to the pageIndex
+            var resultPage = (int)pageIndex + 1;
+
             client
                  .Member()
                  .Term(query + "*")
-                 .Page((int)pageIndex)
+                 .Page(resultPage)
                  .PageSize(pageSize);
             // I believe in the members section searchFrom will be a member type alias
             if (!String.IsNullOrEmpty(searchFrom))

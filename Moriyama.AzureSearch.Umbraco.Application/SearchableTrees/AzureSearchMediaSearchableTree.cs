@@ -12,7 +12,7 @@ namespace Moriyama.AzureSearch.Umbraco.Application.SearchableTrees
 {
     public class AzureSearchMediaSearchableTree : ISearchableTree
     {
-        public string TreeAlias => "Media";
+        public string TreeAlias => "media";
 
         public IEnumerable<SearchResultItem> Search(string query, int pageSize, long pageIndex, out long totalFound, string searchFrom = null)
         {
@@ -24,12 +24,13 @@ namespace Moriyama.AzureSearch.Umbraco.Application.SearchableTrees
             if (string.IsNullOrEmpty(searchFrom))
             {
                 searchFrom = "-1";
-            }
+            }            //pageIndex is 0 indexed, whereas AzureSearch integration expects actual page number so we always add 1 to the pageIndex
+            var resultPage = (int)pageIndex + 1;
             var azureSearchResults = client
                                 .Media()
                                 .Term(query + "*")
                                 .Contains("Path", searchFrom)
-                                .Page((int)pageIndex)
+                                .Page(resultPage)
                                 .PageSize(pageSize)
                                 .Results();
 

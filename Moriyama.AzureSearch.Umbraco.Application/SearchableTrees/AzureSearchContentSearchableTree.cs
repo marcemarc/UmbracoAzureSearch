@@ -10,13 +10,16 @@ using Umbraco.Web.Search;
 
 namespace Moriyama.AzureSearch.Umbraco.Application.SearchableTrees
 {
+
     public class AzureSearchContentSearchableTree : ISearchableTree
     {
-        public string TreeAlias => "Content";
+        public string TreeAlias => "content";
 
         public IEnumerable<SearchResultItem> Search(string query, int pageSize, long pageIndex, out long totalFound, string searchFrom = null)
         {
+            //TODO configure a default scoring profile for three backoffice searches, allowing users to adjust weighting of backoffice search via config and these ISearchableTree providers
             IAzureSearchClient client = AzureSearchContext.Instance.GetSearchClient();
+
             // if the search term contains a space this will be transformed to %20 and no search results returned
             // so lets decode the query term to turn it back into a proper space
             // will this mess up any other Url encoded terms? or fix them too?
@@ -25,11 +28,13 @@ namespace Moriyama.AzureSearch.Umbraco.Application.SearchableTrees
             {
                 searchFrom = "-1";
             }
+            //pageIndex is 0 indexed, whereas AzureSearch integration expects actual page number so we always add 1 to the pageIndex
+            var resultPage = (int)pageIndex + 1;
             var azureSearchResults = client
                                 .Content()
                                 .Term(query + "*")
                                 .Contains("Path", searchFrom)
-                                .Page((int)pageIndex)
+                                .Page(resultPage)
                                 .PageSize(pageSize)
                                 .Results();
 
@@ -46,5 +51,6 @@ namespace Moriyama.AzureSearch.Umbraco.Application.SearchableTrees
             }
             return searchResults;
         }
+
     }
 }
